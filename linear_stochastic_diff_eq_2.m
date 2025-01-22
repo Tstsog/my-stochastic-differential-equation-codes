@@ -24,26 +24,21 @@ T_f = 10000.;   % time t
 Nt = 2^16;
 dt = T_f/Nt;
 %
-M = 5.;         % number of paths
-%
-x0 = rand(M,1);
+x0 = rand(1);
 %
 fileID_save_data_1 = fopen('linear_stochastic_diff_eq_2.txt','w');
 %
-for s = 1:M
+dw = sqrt(dt)*randn(1,Nt);
+for ii = 1:Nt
     %
-    dw = sqrt(dt)*randn(1,Nt);
-    for ii = 1:Nt
-        %
-        dW = sum( dw((ii-1)+1:ii) );
-        x = x0 - dt * x0 + dW;
-        x0 = x;
-        %
-        output = [ii, ii*dt, mean(x)];                
-        %
-        fprintf(fileID_save_data_1, '%4.4f \t %8.4f \t %8.12f\n', output);
-        %    
-    end
+    dW = sum( dw((ii-1)+1:ii) );
+    x = x0 - dt * x0 + dW;
+    x0 = x;
+    %
+    output = [ii, ii*dt, mean(x)];                
+    %
+    fprintf(fileID_save_data_1, '%4.4f \t %8.4f \t %8.12f\n', output);
+    %
 end
 %
 fclose(fileID_save_data_1);
